@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "id": "olly.prompt-guide",
+  "name": "Prompt guide",
+  "version": "1.0.0",
+  "author": "Olly Warren",
+  "license": "MIT",
+  "description": "Best-practice prompt templates in the bar: pick a skeleton, edit it in place, copy it to the clipboard.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Prompt guide",
+    "description": "Editable prompt templates with a copy button and a best-practice checklist.",
+    "category": "Tools",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "icon": "󰛨",
+      "panelWidth": 420,
+      "editorHeight": 200,
+      "showTips": true
+    },
+    "schema": [
+      {
+        "key": "icon",
+        "type": "string",
+        "label": "Bar icon glyph"
+      },
+      {
+        "key": "panelWidth",
+        "type": "integer",
+        "label": "Panel width (px)",
+        "min": 280,
+        "max": 900,
+        "step": 10,
+        "defaultValue": 420
+      },
+      {
+        "key": "editorHeight",
+        "type": "integer",
+        "label": "Editor height (px)",
+        "min": 100,
+        "max": 600,
+        "step": 10,
+        "defaultValue": 200
+      },
+      {
+        "key": "showTips",
+        "type": "boolean",
+        "label": "Show the best-practice checklist",
+        "defaultValue": true
+      }
+    ]
+  }
+}
