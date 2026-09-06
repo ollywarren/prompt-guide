@@ -1,27 +1,12 @@
 # Prompt guide
 
-An [Omarchy](https://omarchy.org/) shell plugin. A bar icon that opens a panel
-of best-practice prompt skeletons: pick a template, edit it in place, copy it.
+An [Omarchy](https://omarchy.org/) shell plugin. A bar icon opens a panel of
+best-practice prompt skeletons — pick a template, edit it in place, copy it.
 
-Your edits are kept per template and survive closing the panel, restarting the
+Your edits are saved per template and survive closing the panel, restarting the
 shell, and rebooting. **Reset** puts the shipped template back.
 
-```
-󰛨  ->  ┌──────────────────────────────┐
-       │ Prompt guide                 │
-       │ ROLE, TASK, CONTEXT, FORMAT  │
-       │ [General task            ▾]  │
-       │ ┌──────────────────────────┐ │
-       │ │ # Role                   │ │
-       │ │ You are <ROLE>.          │ │
-       │ │ ...                      │ │
-       │ └──────────────────────────┘ │
-       │ [󰆏 Copy]  [󰑐 Reset]  edited  │
-       │ ── BEST PRACTICE ──          │
-       │ • Give a role and a goal.    │
-       │ • State the output format.   │
-       └──────────────────────────────┘
-```
+![The Prompt guide panel open in the Omarchy bar](preview.png)
 
 ## Templates
 
@@ -36,21 +21,42 @@ shell, and rebooting. **Reset** puts the shipped template back.
 `ALL-CAPS <SLOTS>` are the parts you replace. Everything else is scaffolding
 worth keeping.
 
+## Requirements
+
+- **Omarchy 4.x**, which ships the Quickshell-based `omarchy-shell`.
+- **`wl-clipboard`** — the copy action pipes through `wl-copy`. It is included in
+  `omarchy-base.packages`, so it is already present on every Omarchy install.
+
+No other external dependencies, no network access, no elevated privileges.
+
 ## Install
 
-Already installed if this directory is `~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide`.
-From scratch:
-
 ```bash
-omarchy plugin add <git-url> --enable --yes
+omarchy plugin add https://github.com/ollywarren/omarchy-prompt-guide.git --enable --yes
+omarchy restart shell
 ```
 
-By hand:
+Or by hand:
 
 ```bash
-git clone <git-url> ~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide
+git clone https://github.com/ollywarren/omarchy-prompt-guide.git \
+  ~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide
 omarchy-shell shell rescanPlugins
 omarchy plugin enable ollywarren.omarchy-prompt-guide right
+```
+
+## Removal
+
+```bash
+omarchy plugin remove ollywarren.omarchy-prompt-guide
+```
+
+This asks for confirmation, takes the widget out of your bar, and deletes the
+plugin directory. Your saved drafts are deliberately left behind, so
+reinstalling picks them back up — delete them yourself if you don't want that:
+
+```bash
+rm ~/.local/state/omarchy/prompt-guide.json
 ```
 
 ## Using it
@@ -89,13 +95,26 @@ omarchy-shell ollywarren.omarchy-prompt-guide next        # or: previous
 omarchy-shell ollywarren.omarchy-prompt-guide reset       # discard edits to this template
 ```
 
-`copy` works whether or not the panel is open, so a keybind can put the prompt
-on the clipboard without any UI.
+`copy` works whether or not the panel is open, so a keybind can put the prompt on
+the clipboard without any UI.
+
+## What it writes
+
+The plugin writes exactly two things, both on your instruction:
+
+- `~/.local/state/omarchy/prompt-guide.json` — its own state file, holding your
+  drafts and the last selected template. This is the only file it ever writes.
+- The clipboard, via `wl-copy`, and only when you copy.
+
+**It never modifies your Omarchy or Hyprland configuration.** It does not touch
+`~/.config/omarchy/shell.json`; the bar entry there is created and removed by
+`omarchy plugin enable` / `disable`, which are your own commands. It spawns no
+process other than `wl-copy`.
 
 ## Settings
 
-Per-widget settings live inline on the layout entry in
-`~/.config/omarchy/shell.json`, which hot-reloads on save:
+Settings live inline on the layout entry in `~/.config/omarchy/shell.json`, which
+hot-reloads on save:
 
 ```json
 { "id": "ollywarren.omarchy-prompt-guide", "panelWidth": 520, "showTips": false }
@@ -108,42 +127,31 @@ Per-widget settings live inline on the layout entry in
 | `editorHeight` | `200` | Prompt box height in px |
 | `showTips` | `true` | Show the best-practice checklist |
 
-Or from the shell: `omarchy bar set ollywarren.omarchy-prompt-guide panelWidth 520`.
+Or from the shell:
+`omarchy bar set ollywarren.omarchy-prompt-guide panelWidth 520`.
 
-## Making it yours
+## Customising the templates
 
 The templates are plain data in [`Templates.js`](Templates.js) — `id`, `label`,
 `hint`, `body`, `tips`. Add or rewrite them there.
 
-Drafts are stored per template `id`, so renaming an id orphans its draft rather
-than corrupting it; if you rewrite a `body`, any template you have edited keeps
-showing your draft until you hit **Reset**.
+Drafts are keyed by template `id`, so renaming an id orphans its draft rather
+than corrupting it. If you rewrite a `body`, any template you have already edited
+keeps showing your draft until you hit **Reset**.
 
-## Files
+## Development
 
-| Path | What |
+Saving a file under `~/.config/omarchy/plugins/` normally hot-reloads it. If a
+change to `Panel.qml` doesn't appear, `omarchy restart shell` — a stale bar widget
+is not always caught by `rescanPlugins` alone. Check the manifest with
+`omarchy plugin validate <dir>`, and watch for QML errors with
+`journalctl --user -f | grep omarchy-shell`.
+
+| File | What |
 |---|---|
 | `manifest.json` | Plugin declaration and settings schema |
 | `Panel.qml` | Bar button + popup |
 | `Templates.js` | The templates and their checklists |
-| `~/.local/state/omarchy/prompt-guide.json` | Your drafts and last selection |
-
-## Hacking
-
-Saving a file under `~/.config/omarchy/plugins/` normally hot-reloads it. If a
-change to `Panel.qml` doesn't show up, force it:
-
-```bash
-omarchy-shell shell rescanPlugins
-omarchy restart shell          # if the widget itself looks stale
-omarchy plugin validate ~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide
-```
-
-QML errors land in the shell's log:
-
-```bash
-journalctl --user -f | grep omarchy-shell
-```
 
 ## Licence
 
