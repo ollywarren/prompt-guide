@@ -114,8 +114,9 @@ The plugin writes exactly two things, both on your instruction:
 
 **It never modifies your Omarchy or Hyprland configuration.** It does not touch
 `~/.config/omarchy/shell.json`; the bar entry there is created and removed by
-`omarchy plugin enable` / `disable`, which are your own commands. It spawns no
-process other than `wl-copy`.
+`omarchy plugin enable` / `disable`, which are your own commands. The only
+processes it spawns are `wl-copy`, to put a prompt on the clipboard, and
+`omarchy-notification-send`, to confirm a bar action — both ship with Omarchy.
 
 ## Settings
 

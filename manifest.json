@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "ollywarren.prompt-guide",
-  "name": "Omarchy Prompt Guide",
+  "name": "Prompt guide",
   "version": "1.0.0",
   "author": "Olly Warren",
   "license": "MIT",
@@ -15,7 +15,7 @@
   "barWidget": {
     "displayName": "Prompt guide",
     "description": "Editable prompt templates with a copy button and a best-practice checklist.",
-    "category": "Tools",
+    "category": "AI",
     "allowMultiple": false,
     "defaultSection": "right",
     "defaults": {
