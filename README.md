@@ -38,7 +38,7 @@ worth keeping.
 
 ## Install
 
-Already installed if this directory is `~/.config/omarchy/plugins/olly.prompt-guide`.
+Already installed if this directory is `~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide`.
 From scratch:
 
 ```bash
@@ -48,9 +48,9 @@ omarchy plugin add <git-url> --enable --yes
 By hand:
 
 ```bash
-git clone <git-url> ~/.config/omarchy/plugins/olly.prompt-guide
+git clone <git-url> ~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide
 omarchy-shell shell rescanPlugins
-omarchy plugin enable olly.prompt-guide right
+omarchy plugin enable ollywarren.omarchy-prompt-guide right
 ```
 
 ## Using it
@@ -80,13 +80,13 @@ o.bind("SUPER CTRL", "P", "Prompt guide", "omarchy-shell olly.prompt-guide toggl
 ## IPC
 
 ```bash
-omarchy-shell olly.prompt-guide toggle      # open / close the panel
-omarchy-shell olly.prompt-guide copy        # copy the current prompt
-omarchy-shell olly.prompt-guide prompt      # print it instead
-omarchy-shell olly.prompt-guide current     # id of the selected template
-omarchy-shell olly.prompt-guide select code # switch template
-omarchy-shell olly.prompt-guide next        # or: previous
-omarchy-shell olly.prompt-guide reset       # discard edits to this template
+omarchy-shell ollywarren.omarchy-prompt-guide toggle      # open / close the panel
+omarchy-shell ollywarren.omarchy-prompt-guide copy        # copy the current prompt
+omarchy-shell ollywarren.omarchy-prompt-guide prompt      # print it instead
+omarchy-shell ollywarren.omarchy-prompt-guide current     # id of the selected template
+omarchy-shell ollywarren.omarchy-prompt-guide select code # switch template
+omarchy-shell ollywarren.omarchy-prompt-guide next        # or: previous
+omarchy-shell ollywarren.omarchy-prompt-guide reset       # discard edits to this template
 ```
 
 `copy` works whether or not the panel is open, so a keybind can put the prompt
@@ -98,7 +98,7 @@ Per-widget settings live inline on the layout entry in
 `~/.config/omarchy/shell.json`, which hot-reloads on save:
 
 ```json
-{ "id": "olly.prompt-guide", "panelWidth": 520, "showTips": false }
+{ "id": "ollywarren.omarchy-prompt-guide", "panelWidth": 520, "showTips": false }
 ```
 
 | Key | Default | What |
@@ -108,7 +108,7 @@ Per-widget settings live inline on the layout entry in
 | `editorHeight` | `200` | Prompt box height in px |
 | `showTips` | `true` | Show the best-practice checklist |
 
-Or from the shell: `omarchy bar set olly.prompt-guide panelWidth 520`.
+Or from the shell: `omarchy bar set ollywarren.omarchy-prompt-guide panelWidth 520`.
 
 ## Making it yours
 
