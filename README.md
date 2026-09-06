@@ -74,7 +74,7 @@ cycles templates.
 Bind the panel to a key in `~/.config/hypr/bindings.lua`:
 
 ```lua
-o.bind("SUPER CTRL", "P", "Prompt guide", "omarchy-shell olly.prompt-guide toggle")
+o.bind("SUPER CTRL", "P", "Prompt guide", "omarchy-shell ollywarren.omarchy-prompt-guide toggle")
 ```
 
 ## IPC
@@ -136,7 +136,7 @@ change to `Panel.qml` doesn't show up, force it:
 ```bash
 omarchy-shell shell rescanPlugins
 omarchy restart shell          # if the widget itself looks stale
-omarchy plugin validate ~/.config/omarchy/plugins/olly.prompt-guide
+omarchy plugin validate ~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide
 ```
 
 QML errors land in the shell's log:

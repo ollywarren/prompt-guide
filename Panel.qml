@@ -15,8 +15,8 @@ import "Templates.js" as Templates
 // · middle = next template · scroll = cycle templates.
 Panel {
   id: root
-  moduleName: "olly.prompt-guide"
-  ipcTarget: "olly.prompt-guide"
+  moduleName: "ollywarren.omarchy-prompt-guide"
+  ipcTarget: "ollywarren.omarchy-prompt-guide"
   manageIpc: false
 
   // ---------------------------------------------------------------- theme
