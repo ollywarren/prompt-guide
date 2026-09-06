@@ -32,23 +32,23 @@ No other external dependencies, no network access, no elevated privileges.
 ## Install
 
 ```bash
-omarchy plugin add https://github.com/ollywarren/omarchy-prompt-guide.git --enable --yes
+omarchy plugin add https://github.com/ollywarren/prompt-guide.git --enable --yes
 omarchy restart shell
 ```
 
 Or by hand:
 
 ```bash
-git clone https://github.com/ollywarren/omarchy-prompt-guide.git \
-  ~/.config/omarchy/plugins/ollywarren.omarchy-prompt-guide
+git clone https://github.com/ollywarren/prompt-guide.git \
+  ~/.config/omarchy/plugins/ollywarren.prompt-guide
 omarchy-shell shell rescanPlugins
-omarchy plugin enable ollywarren.omarchy-prompt-guide right
+omarchy plugin enable ollywarren.prompt-guide right
 ```
 
 ## Removal
 
 ```bash
-omarchy plugin remove ollywarren.omarchy-prompt-guide
+omarchy plugin remove ollywarren.prompt-guide
 ```
 
 This asks for confirmation, takes the widget out of your bar, and deletes the
@@ -65,6 +65,12 @@ rm ~/.local/state/omarchy/prompt-guide.json
 without opening anything · middle click moves to the next template · scroll
 cycles templates.
 
+The three that work with the panel shut confirm themselves with a desktop
+notification (*"Code & debugging — Template copied to clipboard"*), since
+nothing on screen would otherwise change. Scrolling through several templates
+notifies once, for where you land. With the panel open they stay quiet — the
+panel already shows the result.
+
 **Keyboard**, once the panel is open:
 
 | Key | Does |
@@ -80,19 +86,19 @@ cycles templates.
 Bind the panel to a key in `~/.config/hypr/bindings.lua`:
 
 ```lua
-o.bind("SUPER CTRL", "P", "Prompt guide", "omarchy-shell ollywarren.omarchy-prompt-guide toggle")
+o.bind("SUPER CTRL", "P", "Prompt guide", "omarchy-shell ollywarren.prompt-guide toggle")
 ```
 
 ## IPC
 
 ```bash
-omarchy-shell ollywarren.omarchy-prompt-guide toggle      # open / close the panel
-omarchy-shell ollywarren.omarchy-prompt-guide copy        # copy the current prompt
-omarchy-shell ollywarren.omarchy-prompt-guide prompt      # print it instead
-omarchy-shell ollywarren.omarchy-prompt-guide current     # id of the selected template
-omarchy-shell ollywarren.omarchy-prompt-guide select code # switch template
-omarchy-shell ollywarren.omarchy-prompt-guide next        # or: previous
-omarchy-shell ollywarren.omarchy-prompt-guide reset       # discard edits to this template
+omarchy-shell ollywarren.prompt-guide toggle      # open / close the panel
+omarchy-shell ollywarren.prompt-guide copy        # copy the current prompt
+omarchy-shell ollywarren.prompt-guide prompt      # print it instead
+omarchy-shell ollywarren.prompt-guide current     # id of the selected template
+omarchy-shell ollywarren.prompt-guide select code # switch template
+omarchy-shell ollywarren.prompt-guide next        # or: previous
+omarchy-shell ollywarren.prompt-guide reset       # discard edits to this template
 ```
 
 `copy` works whether or not the panel is open, so a keybind can put the prompt on
@@ -117,7 +123,7 @@ Settings live inline on the layout entry in `~/.config/omarchy/shell.json`, whic
 hot-reloads on save:
 
 ```json
-{ "id": "ollywarren.omarchy-prompt-guide", "panelWidth": 520, "showTips": false }
+{ "id": "ollywarren.prompt-guide", "panelWidth": 520, "showTips": false }
 ```
 
 | Key | Default | What |
@@ -128,7 +134,7 @@ hot-reloads on save:
 | `showTips` | `true` | Show the best-practice checklist |
 
 Or from the shell:
-`omarchy bar set ollywarren.omarchy-prompt-guide panelWidth 520`.
+`omarchy bar set ollywarren.prompt-guide panelWidth 520`.
 
 ## Customising the templates
 

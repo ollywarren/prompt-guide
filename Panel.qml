@@ -12,11 +12,13 @@ import "Templates.js" as Templates
 // KeyboardPanel is the popup it anchors.
 //
 // Interactions: left = popup · right = copy the current prompt without opening
-// · middle = next template · scroll = cycle templates.
+// · middle = next template · scroll = cycle templates. The three that work with
+// the panel shut confirm themselves with a desktop notification, since nothing
+// on screen would otherwise change.
 Panel {
   id: root
-  moduleName: "ollywarren.omarchy-prompt-guide"
-  ipcTarget: "ollywarren.omarchy-prompt-guide"
+  moduleName: "ollywarren.prompt-guide"
+  ipcTarget: "ollywarren.prompt-guide"
   manageIpc: false
 
   // ---------------------------------------------------------------- theme
@@ -68,6 +70,12 @@ Panel {
     var list = Templates.templates()
     var next = (Templates.indexOfId(selectedId) + step + list.length) % list.length
     selectTemplate(list[next].id)
+    // Scrolling and middle-clicking happen on the bar icon, where the picker
+    // and the editor are both out of sight — so the change is announced.
+    // Debounced rather than fired per step: one flick of the wheel crosses
+    // several templates, and that should be one notification about where you
+    // landed, not five about where you passed through.
+    if (!opened) cycleNotifyTimer.restart()
   }
 
   // Fold the editor's current text back into `drafts`. Reassigning the whole
@@ -101,7 +109,11 @@ Panel {
   function copyPrompt() {
     if (!editorReady) return
     copyText(editor.text)
-    flash("Copied to clipboard")
+    // Two audiences for the same confirmation: the panel's own status line when
+    // it is open, a desktop notification when the copy came from the bar icon
+    // and there is no panel to show it in.
+    if (opened) flash("Copied to clipboard")
+    else notify(activeTemplate.label, "Template copied to clipboard")
   }
 
   // Keyboard hand-off into the editor. Parking the caret at the end matters:
@@ -116,6 +128,14 @@ Panel {
   function flash(message) {
     statusText = message
     statusTimer.restart()
+  }
+
+  // execArgv, not execDetached: it runs `exec "$@"` under a login shell, so the
+  // arguments stay literal (no re-tokenizing of a template label) while still
+  // picking up the PATH that has omarchy-notification-send on it.
+  function notify(headline, body) {
+    Util.execArgv(["omarchy-notification-send", "--app-name", "Prompt guide",
+                   "-g", iconGlyph, "-t", "2000", headline, body])
   }
 
   // ------------------------------------------------------------- lifecycle
@@ -156,6 +176,14 @@ Panel {
     id: statusTimer
     interval: 1800
     onTriggered: root.statusText = ""
+  }
+
+  // Long enough to swallow a multi-step scroll gesture, short enough that the
+  // notification still feels like a response to it.
+  Timer {
+    id: cycleNotifyTimer
+    interval: 350
+    onTriggered: root.notify(root.activeTemplate.label, "Template selected")
   }
 
   // ----------------------------------------------------------- persistence
